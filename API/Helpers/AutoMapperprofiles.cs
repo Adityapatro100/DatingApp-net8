@@ -1,5 +1,6 @@
 using System;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using AutoMapper;
@@ -15,6 +16,7 @@ public class AutoMapperprofiles :Profile
             .ForMember(d => d.PhotoUrl,o =>
                 o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain)!.Url));
         CreateMap<Photo,PhotoDto>();
+        CreateMap<MemberUpdateDto,AppUser>();
 
     }
 }
