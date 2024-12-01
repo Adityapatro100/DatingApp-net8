@@ -39,7 +39,7 @@ public class UsersController(IUserRepository userRepository,IMapper mapper,
     [HttpGet("{username}")]   // localhost:5001/api/users/3
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
-        var user = await userRepository.GetMemberAsync(username);
+        var user = await userRepository.GetMemberAsync(username.ToLower());
 
         if (user == null) return NotFound();
 
@@ -70,6 +70,7 @@ public class UsersController(IUserRepository userRepository,IMapper mapper,
             Url =result.SecureUrl.AbsoluteUri,
             PublicId=result.PublicId
         };
+        if (user.Photos.Count==0) photo.IsMain=true;
         user.Photos.Add(photo);
 
         if (await userRepository.SaveAllAsync()) 
