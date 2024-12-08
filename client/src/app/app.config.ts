@@ -10,6 +10,7 @@ import { jwtInterceptor } from './_interceptor/jwt.interceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { loadingInterceptor } from './_interceptor/loading.interceptor';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
