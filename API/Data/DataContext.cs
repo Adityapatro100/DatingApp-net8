@@ -11,6 +11,10 @@ public class DataContext(DbContextOptions options) : IdentityDbContext<AppUser,A
 {
     public DbSet<UserLike> Likes { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<Connection> Connections { get; set; }
+    public DbSet<Photo> Photos { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

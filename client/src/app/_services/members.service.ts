@@ -7,7 +7,7 @@ import { Photo } from '../_models/photos';
 import { PaginatedResult } from '../_models/pagination';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
-import { setpaginationHeaders, setPaginatedResponse } from './paginationhelper';
+import { setpaginationHeaders, setPaginatedResponse } from './paginationHelper';
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Member } from '../_models/member';
 import { PaginatedResult } from '../_models/pagination';
-import { setPaginatedResponse, setpaginationHeaders } from './paginationhelper';
+import { setPaginatedResponse, setpaginationHeaders } from './paginationHelper';
 import { observeNotification } from 'rxjs/internal/Notification';
 
 @Injectable({

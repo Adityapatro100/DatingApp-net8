@@ -3,14 +3,21 @@ using API.DTOs;
 using API.Entities;
 using API.Helpers;
 using API.Interfaces;
+using API.SignalR;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
 public class MessageRepository(DataContext context,IMapper mapper) : IMessageRepository
 {
+    public void AddGroup(Group group)
+    {
+        throw new NotImplementedException();
+    }
+
     public void AddMessage(Message message)
     {
         context.Messages.Add(message);
@@ -21,9 +28,29 @@ public class MessageRepository(DataContext context,IMapper mapper) : IMessageRep
         context.Messages.Remove(message);
     }
 
+    public async Task<Connection?> GetConnection(string connectionId)
+    {
+        return await context.Connections.FindAsync(connectionId);
+    }
+
+    public async Task<Group?> GetGroupForConnection(string connectionId)
+    {
+        return await context.Groups
+            .Include(x => x.Connections)
+            .Where(x => x.Connections.Any(c => c.ConnectionId == connectionId))
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Message?> GetMessage(int id)
     {
         return await context.Messages.FindAsync(id);
+    }
+
+    public async Task<Group?> GetMessageGroup(string groupName)
+    {
+        return await context.Groups
+            .Include(x => x.Connections)
+            .FirstOrDefaultAsync(x => x.Name == groupName);
     }
 
     public async Task<PagedList<MessageDto>> GetMessagesForUser(MessageParams messageParams)
@@ -50,9 +77,7 @@ public class MessageRepository(DataContext context,IMapper mapper) : IMessageRep
 
     public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipientUsername)
     {
-        var messages = await context.Messages
-            .Include(x => x.Sender).ThenInclude(x => x.Photos)
-            .Include(x => x.Recipient).ThenInclude(x => x.Photos)
+        var query = context.Messages
             .Where(x =>
                 x.RecipientUsername == currentUsername 
                     && x.RecipientDeleted ==false 
@@ -61,22 +86,23 @@ public class MessageRepository(DataContext context,IMapper mapper) : IMessageRep
                     && x.SenderDeleted ==false 
                     && x.RecipientUsername == recipientUsername )
             .OrderBy(x => x.MessageSent)
-            .ToListAsync();
-         var unreadMessages = messages.Where(x => x.DateRead == null && 
+            .AsQueryable();
+         var unreadMessages = query.Where(x => x.DateRead == null && 
             x.RecipientUsername == currentUsername).ToList();
 
         if (unreadMessages.Count != 0)
         {
             unreadMessages.ForEach(x => x.DateRead = DateTime.UtcNow);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync();//remeber 237-8:03
         }
+        
 
-        return mapper.Map<IEnumerable<MessageDto>>(messages);
+        return await query.ProjectTo<MessageDto>(mapper.ConfigurationProvider).ToListAsync();
         
     }
 
-    public async Task<bool> SaveAllAsync()
+    public void RemoveConnection(Connection connection)
     {
-        return await context.SaveChangesAsync()>0;
+        context.Connections.Remove(connection);
     }
 }

@@ -1,5 +1,6 @@
 <div class="card">
     <div class="card-body">
+        <!-- @if (messageService.messageThread().length === 0) { -->
         @if (messages().length === 0) {
             <p>No messages yet</p>
         } @else {
@@ -8,6 +9,7 @@
                 #scrollMe
                 style="overflow: scroll; max-height: 500px; scroll-behavior: smooth;"
             >
+                <!-- @for (message of messageService.messageThread(); track message.id) { -->
                 @for (message of messages(); track message.id) {
                     <li>
                         <div>

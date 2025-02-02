@@ -18,7 +18,7 @@
               <a routerLink="/admin" routerLinkActive="active" class="nav-link">Admin</a>
             </li>
           }
-          <li *[appHasRole]="['Admin','Moderator']" class="nav-item">
+          <li *appHasRole="['Admin','Moderator']" class="nav-item">
             <a routerLink="/errors" routerLinkActive="active" class="nav-link">Errors</a>
           </li>
         </ul>

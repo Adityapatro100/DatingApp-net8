@@ -1,15 +1,15 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LikesService } from '../_services/likes.service';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { FormsModule } from '@angular/forms';
 import { MemberCardComponent } from "../members/member-card/member-card.component";
 import { PaginatedResult } from '../_models/pagination';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lists',
   standalone: true,
-  imports: [ButtonsModule, FormsModule, MemberCardComponent,PaginationModule],
+  imports:[ButtonsModule,MemberCardComponent,PaginationModule,FormsModule],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.css'
 })
