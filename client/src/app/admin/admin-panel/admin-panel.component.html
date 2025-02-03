@@ -1,14 +1,14 @@
 <h2>Admin panel</h2>
 <div class="tab-panel">
     <tabset class="member-tabset">
-        <!-- // add *appHasRole="['Admin']" -->
-        <tab heading="User management"  >
+        
+        <tab heading="User management" *appHasRole="['Admin']" >
             <div class="container">
                 <app-user-management></app-user-management>
             </div>
         </tab>
-        <!-- //*appHasRole="['Admin', 'Moderator']" -->
-        <tab heading="Photo manangement" >  
+        
+        <tab heading="Photo manangement" *appHasRole="['Admin', 'Moderator']">  
             <div class="container">
                 <app-photo-management></app-photo-management>
             </div>
